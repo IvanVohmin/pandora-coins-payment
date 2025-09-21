@@ -1,0 +1,1 @@
+export {default as HomePage} from './src/components/HomePage/HomePage'

@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import { Montserrat } from "next/font/google";
+import "@/styles/globals.css";
+import Navbar from "@/shared/components/Navbar/Navbar";
+import { ThemeProvider } from "@/providers/theme-provider";
+import { Toaster } from "sonner";
+import Footer from "@/shared/components/Footer/Footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
+  display: "swap",
+  subsets: ["latin", "cyrillic"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -23,9 +24,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+    <html lang="ru">
+      <body className={montserrat.variable}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+        >
+          <div className="container">
+            <Navbar />
+            {children}
+          </div>
+          <Footer />
+        </ThemeProvider>
+        <Toaster richColors position="top-center" />
       </body>
     </html>
   );
