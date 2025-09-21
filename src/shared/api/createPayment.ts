@@ -24,7 +24,7 @@ export const createPayment = async(data: IPaymentData) => {
     } catch (err) {
         return {
             success: false,
-            error: `${err}`
+            error: `Возникла ошибка при создания платёжа в системе`
         }
     }
 }
