@@ -43,9 +43,9 @@ export interface IPaymentData {
 }
 
 export interface IOrderPageProps {
-  params: {
+  params: Promise<{
     orderId: string;
-  };
+  }>;
 }
 
 export interface IOrderPageParamsProps {
