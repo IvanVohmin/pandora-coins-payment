@@ -13,8 +13,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { toast } from "sonner";
+import { createPayment } from "@/shared/api/createPayment";
+import { useRouter } from "next/navigation";
 
 const HomePage = ({ products }: HomePageProps) => {
+  const router = useRouter()
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [userNick, setUserName] = useState<string>("")
   const [itemChoosed, setItemChoosed] = useState<{ item: IProduct | null, show: boolean }>({
@@ -26,10 +29,18 @@ const HomePage = ({ products }: HomePageProps) => {
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleBuy = async () => {
+  const handleBuy = async (itemId: number) => {
+    if (itemId === 0) return;
     if (userNick === '') return toast.error('Заполните поле с ником!')
-    // todo: сделать оплату коинами
-    toast.success(`${userNick.trim()}, пока что оплата коинами отключена. Следите за новостями проекта!`)
+
+    const paymentCreateRequest = await createPayment({player: userNick.trim(), item: itemId})
+    
+    if (!paymentCreateRequest.success) {
+      return toast.error(paymentCreateRequest.error)
+    }
+
+    toast.success(`Успешно!`)
+    router.push(`/order/${paymentCreateRequest.payment}`)
   }
 
   return (
@@ -87,7 +98,7 @@ const HomePage = ({ products }: HomePageProps) => {
           <div className="my-3">
             <Input value={userNick} onChange={e => setUserName(e.target.value)} placeholder="Ваш ник..." />
           </div>
-          <Button onClick={handleBuy} variant={'secondary'}>Купить за {itemChoosed.item?.price} ©</Button>
+          <Button onClick={() => handleBuy(itemChoosed.item?.id || 0)} variant={'secondary'}>Купить за {itemChoosed.item?.price} ©</Button>
         </DialogContent>
       </Dialog>
     </>

@@ -36,3 +36,18 @@ export interface IProduct {
 export interface HomePageProps {
   products: IProduct[];
 }
+
+export interface IPaymentData {
+  player: string;
+  item: number;
+}
+
+export interface IOrderPageProps {
+  params: {
+    orderId: string;
+  };
+}
+
+export interface IOrderPageParamsProps {
+  orderId : string
+}

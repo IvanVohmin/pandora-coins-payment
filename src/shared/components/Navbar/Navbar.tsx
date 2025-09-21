@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { useTheme } from "next-themes"
 import { Monitor, Moon, Sun } from "lucide-react"
+import Link from "next/link"
 
 const Navbar = () => {
     const { theme, setTheme } = useTheme()
@@ -32,10 +33,10 @@ const Navbar = () => {
     return (
         <>
             <div className="w-full my-3 flex items-center justify-between">
-                <div className="flex items-center">
+                <Link href={'/'} className="flex items-center">
                     <Image src={"/logo.png"} alt={"Logo"} height={36} width={36} />
                     <span className="font-bold ml-1.5">Оплата Коинами</span>
-                </div>
+                </Link>
                 <div>
                     <Button
                         variant={'outline'}

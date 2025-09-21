@@ -1,0 +1,1 @@
+export {default as OrderPage} from './src/components/OrderPage'
