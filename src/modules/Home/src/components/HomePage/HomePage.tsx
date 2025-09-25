@@ -32,7 +32,7 @@ const HomePage = ({ products }: HomePageProps) => {
 
   const handleBuy = async (itemId: number) => {
     if (itemId === 0) return;
-    if (userNick === '') return toast.error('Заполните поле с ником!')
+    if (userNick.trim() === '') return toast.error('Заполните поле с ником!')
     
     const userPayments = await getUserPayments(userNick.trim())
 
