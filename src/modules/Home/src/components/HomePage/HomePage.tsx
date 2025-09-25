@@ -15,6 +15,7 @@ import {
 import { toast } from "sonner";
 import { createPayment } from "@/shared/api/createPayment";
 import { useRouter } from "next/navigation";
+import { getUserPayments } from "@/shared/api/getUserPayments";
 
 const HomePage = ({ products }: HomePageProps) => {
   const router = useRouter()
@@ -32,6 +33,16 @@ const HomePage = ({ products }: HomePageProps) => {
   const handleBuy = async (itemId: number) => {
     if (itemId === 0) return;
     if (userNick === '') return toast.error('Заполните поле с ником!')
+    
+    const userPayments = await getUserPayments(userNick.trim())
+
+    if (!userPayments.success) return toast.error(userPayments.error)
+
+    if (userPayments.payments?.length) {
+      // у игрока уже есть не оплаченные товары!
+      toast.error('У вас есть не оплаченные товары. Оплатите или отмените их, чтобы купить что то новое.')
+      return router.push(`/payment/${userNick.trim()}`)
+    }
 
     const paymentCreateRequest = await createPayment({player: userNick.trim(), item: itemId})
     
@@ -72,7 +83,7 @@ const HomePage = ({ products }: HomePageProps) => {
             </CardHeader>
             <CardContent className="space-y-1">
               <div className="flex items-center gap-2">
-                <span className="text-lg font-bold">{product.price} коинов</span>
+                <span className="text-lg font-bold">{product.price.toLocaleString()} коинов</span>
                 {product.old_price && (
                   <span className="text-sm text-muted-foreground line-through">{product.old_price} ₽</span>
                 )}

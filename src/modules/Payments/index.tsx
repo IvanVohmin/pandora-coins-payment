@@ -1,0 +1,1 @@
+export {default as PaymentPage} from './src/components/PaymentsPage'

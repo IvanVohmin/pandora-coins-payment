@@ -51,3 +51,26 @@ export interface IOrderPageProps {
 export interface IOrderPageParamsProps {
   orderId : string
 }
+
+export interface IUserPayments {
+  id: number;
+  player: string;
+  item: number,
+  operationId: string,
+  createdAt: string | Date | null
+}
+
+export interface IPaymentsPageProps {
+  username: string
+  payments: {
+    success: boolean,
+    error: null | string,
+    payments: IUserPayments[] | null
+  }
+}
+
+export interface IPaymentsPageParamsProps {
+  params: Promise<{
+    username: string;
+  }>;
+}
