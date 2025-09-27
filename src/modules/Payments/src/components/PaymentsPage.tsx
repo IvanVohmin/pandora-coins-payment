@@ -2,16 +2,34 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { IPaymentsPageProps } from '@/shared/types/types';
-import { Clock, ShoppingBag, X, Copy } from 'lucide-react';
+import { Clock, ShoppingBag, X, Copy, Info } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { removePayment } from '@/shared/api/removePayment';
 import { useRouter } from 'next/navigation';
+import { getProductName } from '@/shared/api/getProductName';
+import { useEffect, useState } from 'react';
 
 const PaymentPage = ({ username, payments }: IPaymentsPageProps) => {
+    const router = useRouter();
+    const [productNames, setProductNames] = useState<Record<number, string>>({});
 
-    const router = useRouter()
+    const fetchNames = async () => {
+        const names: Record<number, string> = {};
+        for (const payment of payments.payments!) {
+            const productNameRequest = await getProductName(payment.item);
+            names[payment.id] = productNameRequest.success ? productNameRequest.productName : `Unknown`;
+        }
+        setProductNames(names);
+    };
+
+    useEffect(() => {
+        if (!payments || !payments.success || !payments.payments) {
+            return;
+        }
+        fetchNames();
+    }, [payments]);
 
     const copyCode = async (id: string) => {
         try {
@@ -25,14 +43,14 @@ const PaymentPage = ({ username, payments }: IPaymentsPageProps) => {
 
     const cancelPayment = async (id: number) => {
         if (window.confirm('Вы уверены что хотите отменить этот платёж?')) {
-            const cancelRequest = await removePayment(id)
+            const cancelRequest = await removePayment(id);
             if (!cancelRequest.success) {
-                return toast.error(cancelRequest.error)
+                return toast.error(cancelRequest.error);
             }
-            toast.success('Вы отменили платёж, можете делать новые покупки')
-            router.push('/')
+            toast.success('Вы отменили платёж, можете делать новые покупки');
+            router.push('/');
         }
-    }
+    };
 
     if (!payments.success) {
         return (
@@ -79,6 +97,10 @@ const PaymentPage = ({ username, payments }: IPaymentsPageProps) => {
                     <Card key={payment.id} className="mt-4">
                         <CardHeader className="pb-3">
                             <CardTitle className="text-lg font-semibold">Товар #{payment.id}</CardTitle>
+                            <div className="flex items-center text-sm text-muted-foreground mb-2">
+                                <Info className="mr-1.5 h-3.5 w-3.5" />
+                                Название товара: {productNames[payment.id] || 'Загрузка...'}
+                            </div>
                             <div className="flex items-center text-sm text-muted-foreground">
                                 <Clock className="mr-1.5 h-3.5 w-3.5" />
                                 Статус: Ожидает оплаты
@@ -102,7 +124,9 @@ const PaymentPage = ({ username, payments }: IPaymentsPageProps) => {
                                 </div>
                             </div>
                             <div className='my-3'>
-                                <Button onClick={() => cancelPayment(payment.id)} className='bg-red-500 hover:bg-red-400'><X /> Отменить платеж</Button>
+                                <Button onClick={() => cancelPayment(payment.id)} className='bg-red-500 hover:bg-red-400'>
+                                    <X className="mr-1.5" /> Отменить платеж
+                                </Button>
                             </div>
                             <p className="text-xs text-muted-foreground">
                                 ID операции: <span className="font-mono">{payment.id}</span>
