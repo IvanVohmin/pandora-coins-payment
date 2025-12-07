@@ -64,13 +64,14 @@ const HomePage = ({ products }: HomePageProps) => {
         />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredProducts.map((product) => (
+        {filteredProducts.map((product, idx) => (
           <Card key={product.id} className="overflow-hidden hover:shadow-md transition-shadow duration-300">
             {product.image && (
               <div className="w-full h-48 overflow-hidden">
                 <img
                   src={product.image}
                   alt={product.name}
+                  loading={idx === 1 ? 'eager' : 'lazy'}
                   className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                 />
               </div>
