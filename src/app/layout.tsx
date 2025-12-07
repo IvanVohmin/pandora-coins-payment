@@ -3,8 +3,8 @@ import { Montserrat } from "next/font/google";
 import "@/styles/globals.css";
 import Navbar from "@/shared/components/Navbar/Navbar";
 import { ThemeProvider } from "@/providers/theme-provider";
-import { Toaster } from "sonner";
 import Footer from "@/shared/components/Footer/Footer";
+import ToastProvider from "@/providers/toasts-provider";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -25,18 +25,15 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body className={montserrat.variable}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-        >
-          <div className="container">
-            <Navbar />
-            {children}
-          </div>
-          <Footer />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ToastProvider>
+            <div className="container">
+              <Navbar />
+              {children}
+            </div>
+            <Footer />
+          </ToastProvider>
         </ThemeProvider>
-        <Toaster richColors position="top-center" />
       </body>
     </html>
   );

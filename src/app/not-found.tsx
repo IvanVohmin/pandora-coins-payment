@@ -1,7 +1,10 @@
+import Link from "next/link";
+
 export default function NotFoundPage() {
   return (
-    <>
-        <h1>404</h1>
-    </>
+    <section className="h-[80vh] w-full flex items-center justify-center flex-col gap-3">
+        <h1 className="text-2xl tracking-tight font-bold">Страница не найдена</h1>
+        <Link href='/'>На главную</Link>
+    </section>
   );
 }
