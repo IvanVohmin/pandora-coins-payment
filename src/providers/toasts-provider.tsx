@@ -10,6 +10,7 @@ const ToastProvider = ({ children }: { children: ReactNode }) => {
       {children}
       <Toaster
         richColors
+        position="top-center"
         theme={(theme as "dark" | "light" | "system") || "dark"}
       />
     </>
