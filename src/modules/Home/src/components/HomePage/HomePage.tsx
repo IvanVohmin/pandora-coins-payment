@@ -116,14 +116,20 @@ const HomePage = ({ products }: HomePageProps) => {
         ))}
       </div>
       <Dialog open={itemChoosed.show} onOpenChange={handleCloseModal}>
-        <DialogContent className="w-full sm:w-[370px]">
+        <DialogContent className="w-full sm:w-[420px]">
           <DialogHeader>
             <DialogTitle>{itemChoosed.item?.name}</DialogTitle>
-            <DialogDescription>
-              Укажите свой ник, чтобы продолжить:
-            </DialogDescription>
           </DialogHeader>
+          <div className="w-full overflow-x-auto opacity-90">
+            {itemChoosed.item?.type === "group" ? (
+              <pre>{itemChoosed.item.description}</pre>
+            ) : (
+              <p>{itemChoosed.item?.description}</p>
+            )}
+          </div>
+          <hr />
           <div className="my-3">
+            <h4 className="mb-2 text-muted-foreground text-sm">Укажите свой ник, чтобы продолжить:</h4>
             <Input
               value={userNick}
               onChange={(e) => setUserName(e.target.value)}
