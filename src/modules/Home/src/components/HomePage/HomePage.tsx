@@ -37,8 +37,15 @@ const HomePage = ({ products }: HomePageProps) => {
   });
 
   const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    product.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
+
+  const handleCloseModal = () => {
+    setItemChoosed({ ...itemChoosed, show: false });
+    setTimeout(() => {
+      setItemChoosed({ ...itemChoosed, item: null });
+    }, 200);
+  };
 
   const handleBuy = async (itemId: number) => {
     if (itemId === 0) return;
@@ -49,9 +56,8 @@ const HomePage = ({ products }: HomePageProps) => {
     if (!userPayments.success) return toast.error(userPayments.error);
 
     if (userPayments.payments?.length) {
-      // у игрока уже есть не оплаченные товары!
       toast.error(
-        "У вас есть не оплаченные товары. Оплатите или отмените их, чтобы купить что то новое."
+        "У вас есть не оплаченные товары. Оплатите или отмените их, чтобы купить что то новое.",
       );
       return router.push(`/payment/${userNick.trim()}`);
     }
@@ -134,10 +140,7 @@ const HomePage = ({ products }: HomePageProps) => {
           </Card>
         ))}
       </div>
-      <Dialog
-        open={itemChoosed.show}
-        onOpenChange={() => setItemChoosed({ show: false, item: null })}
-      >
+      <Dialog open={itemChoosed.show} onOpenChange={handleCloseModal}>
         <DialogContent className="w-full sm:w-[365px]">
           <DialogHeader>
             <DialogTitle>{itemChoosed.item?.name}</DialogTitle>

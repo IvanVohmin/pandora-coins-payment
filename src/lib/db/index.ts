@@ -7,8 +7,7 @@ declare global {
 }
 
 function createDbClient() {
-  console.log("🚀 Creating new MySQL connection pool");
-
+  console.log("Creating new MySQL connection pool");
 
   const pool = mysql.createPool({
     host: process.env.DB_HOST,
@@ -20,12 +19,11 @@ function createDbClient() {
     queueLimit: 0,
   });
 
-  return drizzle(pool, { schema, mode: 'default' });
+  return drizzle(pool, { schema, mode: "default" });
 }
 
 const db = globalThis.db ?? createDbClient();
 
-// Кэшируем в dev, чтобы HMR не создавал новые пулы
 if (process.env.NODE_ENV !== "production") {
   globalThis.db = db;
 }

@@ -15,9 +15,13 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   title: "Оплата Коинами | PandoraMC.ru",
+  description: "Покупка донат-услуг на сервере PandoraMc.ru за коины",
+  icons: {
+    icon: "/logo.png",
+  },
 };
 
-export default function RootLayout({
+export default function GlobalLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
