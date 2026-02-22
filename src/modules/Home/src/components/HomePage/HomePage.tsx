@@ -23,11 +23,14 @@ import { createPayment } from "@/shared/api/createPayment";
 import { useRouter } from "next/navigation";
 import { getUserPayments } from "@/shared/api/getUserPayments";
 import Image from "next/image";
+import Spinner from "@/shared/utils/Spinner";
+import ProductCard from "../ProductCard";
 
 const HomePage = ({ products }: HomePageProps) => {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [userNick, setUserName] = useState<string>("");
+  const [buyLoading, setBuyLoading] = useState<boolean>(false);
   const [itemChoosed, setItemChoosed] = useState<{
     item: IProduct | null;
     show: boolean;
@@ -51,28 +54,41 @@ const HomePage = ({ products }: HomePageProps) => {
     if (itemId === 0) return;
     if (userNick.trim() === "") return toast.error("Заполните поле с ником!");
 
-    const userPayments = await getUserPayments(userNick.trim());
+    setBuyLoading(true);
 
-    if (!userPayments.success) return toast.error(userPayments.error);
+    try {
+      const userPayments = await getUserPayments(userNick.trim());
 
-    if (userPayments.payments?.length) {
-      toast.error(
-        "У вас есть не оплаченные товары. Оплатите или отмените их, чтобы купить что то новое.",
-      );
-      return router.push(`/payment/${userNick.trim()}`);
+      if (!userPayments.success) {
+        setBuyLoading(false);
+        return toast.error(userPayments.error);
+      }
+
+      if (userPayments.payments?.length) {
+        setBuyLoading(false);
+        toast.error(
+          "У вас есть не оплаченные товары. Оплатите или отмените их, чтобы купить что то новое.",
+        );
+        return router.push(`/payment/${userNick.trim()}`);
+      }
+
+      const paymentCreateRequest = await createPayment({
+        player: userNick.trim(),
+        item: itemId,
+      });
+
+      if (!paymentCreateRequest.success) {
+        setBuyLoading(false);
+        return toast.error(paymentCreateRequest.error);
+      }
+
+      toast.success(`Успешно!`);
+      router.push(`/order/${paymentCreateRequest.payment}`);
+    } catch (err) {
+      toast.error(`Возникла непредвиденная ошибка: ${err}`);
+    } finally {
+      setBuyLoading(false);
     }
-
-    const paymentCreateRequest = await createPayment({
-      player: userNick.trim(),
-      item: itemId,
-    });
-
-    if (!paymentCreateRequest.success) {
-      return toast.error(paymentCreateRequest.error);
-    }
-
-    toast.success(`Успешно!`);
-    router.push(`/order/${paymentCreateRequest.payment}`);
   };
 
   return (
@@ -91,57 +107,15 @@ const HomePage = ({ products }: HomePageProps) => {
           </span>
         )}
         {filteredProducts.map((product) => (
-          <Card
+          <ProductCard
             key={product.id}
-            className="overflow-hidden hover:shadow-md transition-shadow duration-300"
-          >
-            {product.image && (
-              <div className="w-full h-48 overflow-hidden">
-                <Image
-                  height={100}
-                  width={100}
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                />
-              </div>
-            )}
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg">{product.name}</CardTitle>
-              {product.description && (
-                <CardDescription className="line-clamp-2 h-10">
-                  {product.description}
-                </CardDescription>
-              )}
-            </CardHeader>
-            <CardContent className="space-y-1">
-              <div className="flex items-center gap-2">
-                <span className="text-lg font-bold">
-                  {product.price.toLocaleString()} коинов
-                </span>
-                {product.old_price && (
-                  <span className="text-sm text-muted-foreground line-through">
-                    {product.old_price} ₽
-                  </span>
-                )}
-              </div>
-            </CardContent>
-            <CardFooter className="pt-2 flex justify-between items-center">
-              <span className="text-xs text-muted-foreground">
-                ID: {product.id}
-              </span>
-              <Button
-                onClick={() => setItemChoosed({ show: true, item: product })}
-                className="bg-primary hover:bg-primary/90"
-              >
-                Выбрать
-              </Button>
-            </CardFooter>
-          </Card>
+            product={product}
+            setItemChoosed={() => setItemChoosed({ show: true, item: product })}
+          />
         ))}
       </div>
       <Dialog open={itemChoosed.show} onOpenChange={handleCloseModal}>
-        <DialogContent className="w-full sm:w-[365px]">
+        <DialogContent className="w-full sm:w-[370px]">
           <DialogHeader>
             <DialogTitle>{itemChoosed.item?.name}</DialogTitle>
             <DialogDescription>
@@ -156,10 +130,15 @@ const HomePage = ({ products }: HomePageProps) => {
             />
           </div>
           <Button
+            disabled={buyLoading}
             onClick={() => handleBuy(itemChoosed.item?.id || 0)}
             variant={"secondary"}
           >
-            Купить за {itemChoosed.item?.price} ©
+            {buyLoading ? (
+              <Spinner size={16} />
+            ) : (
+              <>Купить за {itemChoosed.item?.price.toLocaleString()} ©</>
+            )}
           </Button>
         </DialogContent>
       </Dialog>
