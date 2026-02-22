@@ -44,6 +44,7 @@ const HomePage = ({ products }: HomePageProps) => {
   );
 
   const handleCloseModal = () => {
+    if (buyLoading) return;
     setItemChoosed({ ...itemChoosed, show: false });
     setTimeout(() => {
       setItemChoosed({ show: false, item: null });
@@ -127,6 +128,7 @@ const HomePage = ({ products }: HomePageProps) => {
               value={userNick}
               onChange={(e) => setUserName(e.target.value)}
               placeholder="Ник на сервере"
+              disabled={buyLoading}
             />
           </div>
           <Button
