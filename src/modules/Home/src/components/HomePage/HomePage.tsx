@@ -43,7 +43,7 @@ const HomePage = ({ products }: HomePageProps) => {
   const handleCloseModal = () => {
     setItemChoosed({ ...itemChoosed, show: false });
     setTimeout(() => {
-      setItemChoosed({ ...itemChoosed, item: null });
+      setItemChoosed({ show: false, item: null });
     }, 200);
   };
 
