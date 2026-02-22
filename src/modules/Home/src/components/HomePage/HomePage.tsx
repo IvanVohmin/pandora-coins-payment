@@ -108,7 +108,7 @@ const HomePage = ({ products }: HomePageProps) => {
         ))}
       </div>
       <Dialog open={itemChoosed.show} onOpenChange={handleCloseModal}>
-        <DialogContent className="w-full sm:w-[420px]">
+        <DialogContent className="w-full sm:w-[450px]">
           <DialogHeader>
             <DialogTitle>{itemChoosed.item?.name}</DialogTitle>
           </DialogHeader>
