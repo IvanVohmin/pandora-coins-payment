@@ -135,7 +135,7 @@ const HomePage = ({ products }: HomePageProps) => {
             variant={"secondary"}
           >
             {buyLoading ? (
-              <Spinner size={16} />
+              <Spinner size={18} />
             ) : (
               <>Купить за {itemChoosed.item?.price.toLocaleString()} ©</>
             )}

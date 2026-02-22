@@ -19,7 +19,6 @@ interface IProductCard {
 const ProductCard: FC<IProductCard> = ({ product, setItemChoosed }) => {
   return (
     <Card
-      key={product.id}
       className="overflow-hidden hover:shadow-md transition-shadow duration-300"
     >
       {product.image && (
