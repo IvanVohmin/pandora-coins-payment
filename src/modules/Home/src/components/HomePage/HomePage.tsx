@@ -108,7 +108,7 @@ const HomePage = ({ products }: HomePageProps) => {
         ))}
       </div>
       <Dialog open={itemChoosed.show} onOpenChange={handleCloseModal}>
-        <DialogContent className="w-full sm:w-[450px]">
+        <DialogContent className="w-full sm:w-[480px]">
           <DialogHeader>
             <DialogTitle>{itemChoosed.item?.name}</DialogTitle>
           </DialogHeader>
@@ -132,7 +132,7 @@ const HomePage = ({ products }: HomePageProps) => {
           <Button
             disabled={buyLoading}
             onClick={() => handleBuy(itemChoosed.item?.id || 0)}
-            variant={"secondary"}
+            className="bg-[#1a1a1a] dark:bg-[#fafafa] text-[#fafafa] dark:text-[#1a1a1a]"
           >
             {buyLoading ? (
               <Spinner size={18} />
