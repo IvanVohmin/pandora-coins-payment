@@ -121,7 +121,9 @@ const HomePage = ({ products }: HomePageProps) => {
           </div>
           <hr />
           <div className="my-3">
-            <h4 className="mb-2 text-muted-foreground text-sm">Укажите свой ник, чтобы продолжить:</h4>
+            <h4 className="mb-2 text-muted-foreground text-sm">
+              Укажите свой ник, чтобы продолжить:
+            </h4>
             <Input
               value={userNick}
               onChange={(e) => setUserName(e.target.value)}
@@ -132,7 +134,7 @@ const HomePage = ({ products }: HomePageProps) => {
           <Button
             disabled={buyLoading}
             onClick={() => handleBuy(itemChoosed.item?.id || 0)}
-            className="bg-[#1a1a1a] dark:bg-[#fafafa] text-[#fafafa] dark:text-[#1a1a1a]"
+            className="bg-[#1a1a1a] dark:bg-[#fafafa] text-[#fafafa] dark:text-[#1a1a1a] hover:bg-[#232423] dark:hover:bg-[#eee]"
           >
             {buyLoading ? (
               <Spinner size={18} />
