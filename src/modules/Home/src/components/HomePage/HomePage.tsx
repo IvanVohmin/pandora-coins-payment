@@ -2,23 +2,38 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { HomePageProps, IProduct } from "@/shared/types/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { createPayment } from "@/shared/api/createPayment";
-import { useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { getUserPayments } from "@/shared/api/getUserPayments";
-import Image from "next/image";
 import Spinner from "@/shared/utils/Spinner";
 import ProductCard from "../ProductCard";
 
 const HomePage = ({ products }: HomePageProps) => {
+
+  const searchParams = useSearchParams();
+  const productIdFromParams = searchParams.get("productId");
+
+  useEffect(() => {
+    if (!productIdFromParams) return;
+
+    const productToShow = products.find(
+      (product) => product.id === Number(productIdFromParams),
+    );
+
+    if (productToShow) {
+      setItemChoosed({ show: true, item: productToShow });
+    }
+
+  }, [])
+
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [userNick, setUserName] = useState<string>("");
@@ -40,7 +55,7 @@ const HomePage = ({ products }: HomePageProps) => {
     setItemChoosed({ ...itemChoosed, show: false });
     setTimeout(() => {
       setItemChoosed({ show: false, item: null });
-    }, 200);
+    }, 150);
   };
 
   const handleBuy = async (itemId: number) => {
@@ -107,43 +122,45 @@ const HomePage = ({ products }: HomePageProps) => {
           />
         ))}
       </div>
-      <Dialog open={itemChoosed.show} onOpenChange={handleCloseModal}>
-        <DialogContent className="w-full sm:w-[480px]">
-          <DialogHeader>
-            <DialogTitle>{itemChoosed.item?.name}</DialogTitle>
-          </DialogHeader>
-          <div className="w-full overflow-x-auto opacity-90">
-            {itemChoosed.item?.type === "group" ? (
-              <pre>{itemChoosed.item.description}</pre>
-            ) : (
-              <p>{itemChoosed.item?.description}</p>
-            )}
-          </div>
-          <hr />
-          <div className="my-3">
-            <h4 className="mb-2 text-muted-foreground text-sm">
-              Укажите свой ник, чтобы продолжить:
-            </h4>
-            <Input
-              value={userNick}
-              onChange={(e) => setUserName(e.target.value)}
-              placeholder="Ник на сервере"
+      {itemChoosed.item && (
+        <Dialog open={itemChoosed.show} onOpenChange={handleCloseModal}>
+          <DialogContent className="w-full sm:w-[480px]">
+            <DialogHeader>
+              <DialogTitle>{itemChoosed.item.name}</DialogTitle>
+            </DialogHeader>
+            <div className="w-full overflow-x-auto opacity-90">
+              {itemChoosed.item.type === "group" ? (
+                <pre>{itemChoosed.item.description}</pre>
+              ) : (
+                <p>{itemChoosed.item.description}</p>
+              )}
+            </div>
+            <hr />
+            <div className="my-3">
+              <h4 className="mb-2 text-muted-foreground text-sm">
+                Укажите свой ник, чтобы продолжить:
+              </h4>
+              <Input
+                value={userNick}
+                onChange={(e) => setUserName(e.target.value)}
+                placeholder="Ник на сервере"
+                disabled={buyLoading}
+              />
+            </div>
+            <Button
               disabled={buyLoading}
-            />
-          </div>
-          <Button
-            disabled={buyLoading}
-            onClick={() => handleBuy(itemChoosed.item?.id || 0)}
-            className="bg-[#1a1a1a] dark:bg-[#fafafa] text-[#fafafa] dark:text-[#1a1a1a] hover:bg-[#232423] dark:hover:bg-[#eee]"
-          >
-            {buyLoading ? (
-              <Spinner size={18} />
-            ) : (
-              <>Купить за {itemChoosed.item?.price.toLocaleString()} ©</>
-            )}
-          </Button>
-        </DialogContent>
-      </Dialog>
+              onClick={() => handleBuy(itemChoosed.item?.id || 0)}
+              className="bg-[#1a1a1a] dark:bg-[#fafafa] text-[#fafafa] dark:text-[#1a1a1a] hover:bg-[#232423] dark:hover:bg-[#eee]"
+            >
+              {buyLoading ? (
+                <Spinner size={18} />
+              ) : (
+                <>Купить за {itemChoosed.item.price.toLocaleString()} ©</>
+              )}
+            </Button>
+          </DialogContent>
+        </Dialog>
+      )}
     </>
   );
 };

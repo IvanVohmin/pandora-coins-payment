@@ -6,7 +6,7 @@ const MainPage = async () => {
   const getProductsRequest = await getProducts();
 
   if (!getProductsRequest?.success) {
-    return <p>{getProductsRequest?.error}</p>;
+    return <p className="text-red-400 font-semibold">{getProductsRequest?.error}</p>;
   }
 
   // убрать товар с id = 1017542

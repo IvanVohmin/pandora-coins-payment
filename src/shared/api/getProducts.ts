@@ -26,7 +26,7 @@ export const getProducts = unstable_cache(
 
       return {
         success: false,
-        error: `HTTP ${req.status}`,
+        error: `Возникла ошибка: HTTP ${req.status}`,
       };
     } catch (err) {
       if (axios.isAxiosError(err)) {
