@@ -21,7 +21,7 @@ const MainPage = async () => {
   return (
     <Suspense
       fallback={
-        <div>
+        <div className="h-[80vh] flex items-center justify-center">
           <Spinner />
         </div>
       }
