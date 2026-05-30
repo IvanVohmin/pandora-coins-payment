@@ -5,6 +5,9 @@ import Navbar from "@/shared/components/Navbar/Navbar";
 import { ThemeProvider } from "@/providers/theme-provider";
 import Footer from "@/shared/components/Footer/Footer";
 import ToastProvider from "@/providers/toasts-provider";
+import ScrollToTop from "@/shared/components/ScrollToTop";
+import CaseDiscount from "@/shared/components/Banners/CasesDiscount";
+import IPButton from "@/shared/components/IpButton";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -28,14 +31,17 @@ export default function GlobalLayout({
 }>) {
   return (
     <html lang="ru">
-      <body className={montserrat.variable}>
+      <body className={`${montserrat.variable} flex flex-col min-h-screen`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <ToastProvider>
-            <div className="container">
+            <div className="container flex-1">
+              <IPButton />
               <Navbar />
+              <CaseDiscount />
               {children}
             </div>
             <Footer />
+            <ScrollToTop />
           </ToastProvider>
         </ThemeProvider>
       </body>

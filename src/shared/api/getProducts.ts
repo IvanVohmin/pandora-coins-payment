@@ -39,7 +39,7 @@ export const getProducts = unstable_cache(
   },
   ["products-cache-key"],
   {
-    revalidate: 60 * 10,
+    revalidate: 30,
     tags: ["products"],
   },
 );

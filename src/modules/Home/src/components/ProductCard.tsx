@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { IProduct } from "@/shared/types/types";
 import Image from "next/image";
 import { FC } from "react";
+import DiscountCard from "./DiscountCard";
 
 interface IProductCard {
   product: IProduct;
@@ -18,9 +19,7 @@ interface IProductCard {
 
 const ProductCard: FC<IProductCard> = ({ product, setItemChoosed }) => {
   return (
-    <Card
-      className="overflow-hidden hover:shadow-md transition-shadow duration-300"
-    >
+    <Card className="overflow-hidden hover:shadow-md transition-shadow duration-300">
       {product.image && (
         <div className="w-full h-48 overflow-hidden">
           <Image
@@ -42,8 +41,8 @@ const ProductCard: FC<IProductCard> = ({ product, setItemChoosed }) => {
       </CardHeader>
       <CardContent className="space-y-1">
         <div className="flex items-center gap-2">
-          <span className="text-lg font-bold">
-            {product.price.toLocaleString()} коинов
+          <span className="text-xl font-bold">
+            {product.price.toLocaleString()} ₽
           </span>
           {product.old_price && (
             <span className="text-sm text-muted-foreground line-through">
@@ -51,6 +50,12 @@ const ProductCard: FC<IProductCard> = ({ product, setItemChoosed }) => {
             </span>
           )}
         </div>
+        {product.old_price && (
+          <DiscountCard
+            oldPrice={product.old_price}
+            currentPrice={product.price}
+          />
+        )}
       </CardContent>
       <CardFooter className="pt-2 flex justify-between items-center">
         <span className="text-xs text-muted-foreground">ID: {product.id}</span>

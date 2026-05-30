@@ -14,9 +14,11 @@ const MainPage = async () => {
   }
 
   // убрать товар с id = 1017542
-  const products = getProductsRequest.products.filter(
-    (product: IProduct) => product.id !== 1017542,
-  );
+  // const products = getProductsRequest.products.filter(
+  //   (product: IProduct) => product.id !== 1017542,
+  // );
+
+  const products = getProductsRequest.products;
 
   return (
     <Suspense

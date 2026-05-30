@@ -27,6 +27,7 @@ export interface IProduct {
   image: string | null;
   first_delete: number;
   shop_id: number;
+  category_id: number;
   created_at: string; 
   updated_at: string;
   sort_index: number;

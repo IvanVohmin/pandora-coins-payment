@@ -6,6 +6,7 @@
 body {
     font-family: var(--font-montserrat);
     color: var(--text-foreground);
+    scroll-behavior: smooth;
 }
 
 img {

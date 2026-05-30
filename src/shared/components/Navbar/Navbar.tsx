@@ -32,10 +32,9 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="w-full my-3 flex items-center justify-between">
+      <div className="w-full my-6 flex items-center justify-between">
         <Link href={"/"} className="flex items-center">
-          <Image src={"/logo.png"} alt={"Logo"} height={36} width={36} />
-          <span className="font-bold ml-1.5">Оплата Коинами</span>
+          <h5 className="font-bold ml-1.5 text-2xl">Pandora</h5>
         </Link>
         <div>
           <Button
