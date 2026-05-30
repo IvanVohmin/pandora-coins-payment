@@ -17,8 +17,8 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Оплата Коинами | PandoraMC.ru",
-  description: "Покупка донат-услуг на сервере PandoraMc.ru за коины",
+  title: "Магазин донат-услуг | PandoraMC.ru",
+  description: "Начни свое путешествие в мире Анархии!",
   icons: {
     icon: "/logo.png",
   },
