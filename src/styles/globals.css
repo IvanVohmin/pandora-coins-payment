@@ -136,6 +136,16 @@ a, button {
     }
 }
 
+@keyframes game-shimmer {
+  0% { transform: translateX(-200%) skewX(-30deg); }
+  35% { transform: translateX(250%) skewX(-30deg); }
+  100% { transform: translateX(250%) skewX(-30deg); }
+}
+
+.animate-game-shimmer {
+  animation: game-shimmer 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
 
 .container {
   width: 100%;

@@ -1,34 +1,19 @@
 "use server";
 
-import axios from "axios";
-
-const headers = {
-  "Shop-Key": `${process.env.MERCHANT_API_KEY}`,
-};
-
 export const getProductName = async (id: number) => {
   try {
-    const req = await axios.get(
-      `https://easydonate.ru/api/v3/shop/product/${id}`,
-      {
-        headers: headers,
-      },
-    );
-    if (req.status === 200) {
-      return {
-        success: true,
-        productName: req.data.response.name,
-      };
+    const res = await fetch(`https://easydonate.ru/api/v3/shop/product/${id}`, {
+      headers: { "Shop-Key": `${process.env.MERCHANT_API_KEY}` },
+      next: { revalidate: 300, tags: ["products"] },
+    });
+
+    if (!res.ok) {
+      return { success: false, error: `HTTP ${res.status}` };
     }
 
-    return {
-      success: false,
-      error: `HTTP ${req.status}`,
-    };
+    const data = await res.json();
+    return { success: true, productName: data.response.name as string };
   } catch (err) {
-    return {
-      success: false,
-      error: `${err}`,
-    };
+    return { success: false, error: `${err}` };
   }
 };

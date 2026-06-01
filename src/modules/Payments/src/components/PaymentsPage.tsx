@@ -17,14 +17,13 @@ const PaymentPage = ({ username, payments }: IPaymentsPageProps) => {
   const [productNames, setProductNames] = useState<Record<number, string>>({});
 
   const fetchNames = async () => {
-    const names: Record<number, string> = {};
-    for (const payment of payments.payments!) {
-      const productNameRequest = await getProductName(payment.item);
-      names[payment.id] = productNameRequest.success
-        ? productNameRequest.productName
-        : `Unknown`;
-    }
-    setProductNames(names);
+    const entries = await Promise.all(
+      payments.payments!.map(async (payment) => {
+        const result = await getProductName(payment.item);
+        return [payment.id, result.success ? result.productName : "Unknown"] as [number, string];
+      }),
+    );
+    setProductNames(Object.fromEntries(entries) as Record<number, string>);
   };
 
   useEffect(() => {

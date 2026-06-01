@@ -23,9 +23,6 @@ function createDbClient() {
 }
 
 const db = globalThis.db ?? createDbClient();
-
-if (process.env.NODE_ENV !== "production") {
-  globalThis.db = db;
-}
+globalThis.db = db;
 
 export { db };

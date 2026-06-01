@@ -124,7 +124,7 @@ const HomePage = ({ products }: HomePageProps) => {
   const rublesBuy = async () => {
     if (!itemChoosed.item) return;
     try {
-      console.log(itemChoosed.item.name);
+      // TODO: implement ruble payment flow
     } catch (err) {
       toast.error(`Возникла непредвиденная ошибка: ${err}`);
     } finally {
