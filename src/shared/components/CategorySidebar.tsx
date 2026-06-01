@@ -59,13 +59,13 @@ function CategoryButton({
     <button
       onClick={onClick}
       className={cn(
-        "flex items-center gap-2.5 whitespace-nowrap transition-all duration-200 rounded-xl px-4 py-2.5 text-sm font-medium border",
+        "flex items-center gap-2.5 whitespace-nowrap transition-all duration-200 rounded-lg px-4 py-2.5 text-sm font-medium",
         isActive
-          ? "bg-primary text-primary-foreground border-primary shadow-md shadow-primary/25 scale-[1.02]"
-          : "bg-card text-card-foreground border-border hover:border-primary/40 hover:bg-accent/60 hover:shadow-sm",
+          ? "bg-[#3E7B32] dark:bg-[#4a9e43] text-white shadow-sm shadow-[#3E7B32]/30 dark:shadow-[#4a9e43]/25"
+          : "bg-card text-muted-foreground border border-border hover:border-[#52a346]/40 hover:bg-[#52a346]/10 hover:text-[#3E7B32] dark:hover:text-[#6BBF5E]",
       )}
     >
-      <Icon className={cn("size-4 shrink-0", isActive && "drop-shadow-sm")} />
+      <Icon className="size-4 shrink-0" />
       <span>{category.name}</span>
     </button>
   );

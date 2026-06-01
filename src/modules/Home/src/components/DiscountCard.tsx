@@ -35,9 +35,9 @@ const DiscountCard: FC<IDiscountCard> = ({ oldPrice, currentPrice }) => {
       <div
         className="
         relative overflow-hidden select-none font-bold
-        bg-gradient-to-r from-red-600 to-rose-500 
-        rounded-full p-1 text-[#fafafa] text-sm 
-        w-full max-w-15 text-center
+        bg-gradient-to-r from-red-600 to-rose-500
+        rounded-full px-2.5 py-1 text-[#fafafa] text-xs
+        min-w-[44px] w-auto text-center
         shadow-lg shadow-red-500/20
       "
       >

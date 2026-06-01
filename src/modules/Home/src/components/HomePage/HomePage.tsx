@@ -180,6 +180,18 @@ const HomePage = ({ products }: HomePageProps) => {
         />
       </div>
 
+      <div className="flex items-center gap-4">
+        <div className="flex-1 h-px bg-border" />
+        <div className="flex items-center gap-2">
+          <div className="w-1.5 h-1.5 bg-[#3E7B32] dark:bg-[#52A346] rotate-45" />
+          <span className="text-[10px] tracking-[0.22em] font-bold text-muted-foreground uppercase">
+            Каталог товаров
+          </span>
+          <div className="w-1.5 h-1.5 bg-[#3E7B32] dark:bg-[#52A346] rotate-45" />
+        </div>
+        <div className="flex-1 h-px bg-border" />
+      </div>
+
       <div className="flex gap-6">
         <CategorySidebarDesktop
           activeCategory={activeCategory}
@@ -189,9 +201,10 @@ const HomePage = ({ products }: HomePageProps) => {
         <div className="flex-1 min-w-0">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {!filteredProducts.length && (
-              <span className="text-sm text-muted-foreground col-span-full">
-                Ничего не найдено
-              </span>
+              <div className="col-span-full flex flex-col items-center gap-2 py-12 text-muted-foreground">
+                <div className="w-8 h-8 border-2 border-dashed border-muted-foreground/30 rotate-45" />
+                <span className="text-sm">Ничего не найдено</span>
+              </div>
             )}
             {filteredProducts.map((product) => (
               <ProductCard
