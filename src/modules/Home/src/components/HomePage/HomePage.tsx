@@ -21,6 +21,7 @@ import {
   CategorySidebarDesktop,
 } from "@/shared/components/CategorySidebar";
 import { Search } from "lucide-react";
+import { createPlategaPayment } from "@/shared/api/platega/payment";
 
 type TPurchaseMethod = "coins" | "rub";
 
@@ -122,12 +123,20 @@ const HomePage = ({ products }: HomePageProps) => {
   };
 
   const rublesBuy = async () => {
-    if (!itemChoosed.item) return;
+    if (!itemChoosed.item) {
+      setBuyLoading(false);
+      return;
+    }
+
     try {
-      // TODO: implement ruble payment flow
+      // переход на стр оплаты
+      await createPlategaPayment({
+        amount: 1,
+        productId: itemChoosed.item.id.toString(),
+      });
+
     } catch (err) {
       toast.error(`Возникла непредвиденная ошибка: ${err}`);
-    } finally {
       setBuyLoading(false);
     }
   };
@@ -288,7 +297,7 @@ const HomePage = ({ products }: HomePageProps) => {
             {!isItemCoins && (
               <>
                 <div className="w-full text-center opacity-80 font-bold">
-                  или
+                  <span>или</span>
                 </div>
 
                 <Button
